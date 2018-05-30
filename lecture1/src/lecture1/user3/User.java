@@ -1,16 +1,26 @@
-package lecture1.jdbc3;
+package lecture1.user3;
 
 public class User {
-    public int getId() {
+
+    int id;
+    String userid;
+    String password;
+    String name;
+    String email;
+    int departmentId;
+    String departmentName;
+    boolean enabled;
+    String userType;
+	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getUserId() {
+	public String getUserid() {
 		return userid;
 	}
-	public void setUserId(String userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	public String getPassword() {
@@ -44,9 +54,9 @@ public class User {
 		this.departmentName = departmentName;
 	}
 	public boolean isEnabled() {
-		return enabled == 0 ? false : true;
+		return enabled;
 	}
-	public void setEnabled(int enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 	public String getUserType() {
@@ -55,13 +65,7 @@ public class User {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	int id;
-    String userid;
-    String password;
-    String name;
-    String email;
-    int departmentId;
-    String departmentName;
-    int enabled;
-    String userType;
+
+
+
 }

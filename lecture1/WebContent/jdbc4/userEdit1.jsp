@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lecture1.jdbc3.*, java.util.*" %>
+<%@ page import="lecture1.jdbc4.*, java.util.*, lecture1.*" %>
 <%
 request.setCharacterEncoding("UTF-8");
 
@@ -33,7 +33,7 @@ else {
         에러메시지 = "사용자 유형을 입력하세요";
     else {
         UserDAO.update(user);
-        response.sendRedirect("UserList1.jsp?pg=" + pg);
+        response.sendRedirect("userList1.jsp?pg=" + pg);
         return;
     }
 }
@@ -55,7 +55,7 @@ else {
 
 <div class="container">
 
-<h1>학생 등록</h1>
+<h1>사용자 등록</h1>
 <hr />
 
 <form method="post">
@@ -90,6 +90,10 @@ else {
   <button type="submit" class="btn btn-primary">
     <i class="glyphicon glyphicon-ok"></i> 저장
   </button>
+    <a href="userDelete1.jsp?id=<%= id %>&pg=<%= pg %>" class="btn btn-default" 
+     onclick="return confirm('삭제하시겠습니까?')">
+    <i class="glyphicon glyphicon-trash"></i> 삭제
+  </a>
 </form>
 
 <hr />

@@ -1,40 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="lecture1.jdbc3.*, java.util.*" %>
+<%@ page import="lecture1.user2.*, java.net.*, java.util.*, lecture1.*" %>
 <%
 request.setCharacterEncoding("UTF-8");
 
-String 에러메시지 = null;
-String s1 = request.getParameter("id");
-int id = Integer.parseInt(s1);
-User user = null;
 String pg = request.getParameter("pg");
+String srchText = request.getParameter("st");
+if (srchText == null) srchText = "";
+String srchTextEncoded = URLEncoder.encode(srchText, "UTF-8");
+
+String od =request.getParameter("od");
+String 에러메시지 = null;
+User user =new User(); 
 
 if (request.getMethod().equals("GET")) {
-	user = UserDAO.findOne(id);
+    user.setUserid("");
+    user.setName("");
+    user.setPassword("");
+    user.setEmail("");
+    user.setEnabled(true);
+    user.setUserType("");
 }
 else {
     user = new User();
-    user.setId(id);
-    user.setUserId(request.getParameter("userid"));
+
+    user.setUserid(request.getParameter("userid"));
     user.setName(request.getParameter("name"));
-    user.setEmail(request.getParameter("email"));
-    String s2 = request.getParameter("departmentId");
-    user.setDepartmentId(Integer.parseInt(s2));
- //   String s3 = request.getParameter("userType");
- //   user.setUserType(s3);
+
+  	user.setEmail(request.getParameter("email"));
+  	user.setPassword(request.getParameter("password"));
+  	String s2 = request.getParameter("departmentId");
+    user.setDepartmentId(ParseUtils.parseInt(s2,1));
+    
     user.setUserType(request.getParameter("userType"));
-    if (s1 == null || s1.length() == 0) 
-        에러메시지 = "ID를 입력하세요";
+    
+	if (user.getUserid() == null || user.getUserid().length() == 0) 
+        에러메시지 = "사용자 아이디을 입력하세요";
     else if (user.getName() == null || user.getName().length() == 0) 
         에러메시지 = "이름을 입력하세요";
+    else if (user.getPassword() == null || user.getPassword().length() == 0) 
+        에러메시지 = "비밀번호을 입력하세요";
     else if (user.getEmail() == null || user.getEmail().length() == 0) 
-        에러메시지 = "이메일을 입력하세요";
-    else if (user.getUserType() == null || user.getUserType().length() == 0) 
-        에러메시지 = "사용자 유형을 입력하세요";
+        에러메시지 = "이메일 입력하세요";
+
+       
     else {
-        UserDAO.update(user);
-        response.sendRedirect("UserList1.jsp?pg=" + pg);
+        UserDAO.insert(user);
+        response.sendRedirect("userList.jsp?pg=99999");
         return;
+
     }
 }
 %>
@@ -59,10 +72,15 @@ else {
 <hr />
 
 <form method="post">
-  <div class="form-group">
-    <label>사용자 ID</label>
+ <div class="form-group">
+    <label>사용자 아이디</label>
     <input type="text" class="form-control" name="userid" 
-           value="<%= user.getUserId() %>" />
+           value="<%= user.getUserid() %>" />
+  </div>
+   <div class="form-group">
+    <label>비밀번호</label>
+    <input type="text" class="form-control" name="password" 
+           value="<%= user.getPassword() %>" />
   </div>
   <div class="form-group">
     <label>이름</label>
@@ -79,17 +97,24 @@ else {
       <% } %>
     </select>
   </div>
-  <div class="form-group">
+   <div class="form-group">
     <label>이메일</label>
-   <input type="text" class="form-control" name="email" value="<%= user.getEmail() %>" />
+    <input type="text" class="form-control" name="email" 
+           value="<%= user.getEmail() %>" />
   </div>
-    <div class="form-group">
+  
+   <div class="form-group">
     <label>사용자 유형</label>
-   <input type="text" class="form-control" name="userType" value="<%= user.getUserType() %>" />
+    <input type="text" class="form-control" name="userType" 
+           value="<%= user.getUserType() %>" />
   </div>
   <button type="submit" class="btn btn-primary">
     <i class="glyphicon glyphicon-ok"></i> 저장
   </button>
+  <a href="userList.jsp?pg=<%= pg %>&srchText=<%= srchTextEncoded %>&od<%=od%>" 
+     class="btn btn-default">
+    <i class="glyphicon glyphicon-list"></i> 목록으로
+  </a>  
 </form>
 
 <hr />
@@ -99,12 +124,6 @@ else {
   </div>
 <% } %>
 </div>
-<script>
-$("[data-url]").click(function() {
-	var url = $(this).attr("data-url");
-	location.href = url;
-})
-</script>
-
 </body>
 </html>
+

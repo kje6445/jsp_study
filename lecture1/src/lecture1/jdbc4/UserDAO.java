@@ -1,4 +1,4 @@
-package lecture1.jdbc3;
+package lecture1.jdbc4;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,6 @@ public class UserDAO {
                     user.setDepartmentId(resultSet.getInt("departmentId"));
 	                user.setDepartmentName(resultSet.getString("departmentName"));
 	                user.setUserType(resultSet.getString("userType"));
-	                user.setEnabled(resultSet.getInt("enabled"));
 
 	                list.add(user);
                 }
@@ -81,6 +80,31 @@ public class UserDAO {
             statement.setInt(4, user.getDepartmentId());
             statement.setString(5, user.getUserType());
             statement.setInt(6, user.getId());
+            statement.executeUpdate();
+        }
+    }
+
+    public static void insert(User user) throws Exception {
+        String sql = "INSERT user (userid,password, name, email,departmentId, userType, enabled)" +
+                     " VALUES (?, ? ,?, ?, ?, ?, ?)";
+        try (Connection connection = DB.getConnection("student1");
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, user.getUserId());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getName());
+            statement.setString(4, user.getEmail());
+            statement.setInt(5, user.getDepartmentId());
+            statement.setString(6, user.getUserType());
+            statement.setBoolean(7, user.isEnabled());
+            statement.executeUpdate();
+        }
+    }
+
+    public static void delete(int id) throws Exception {
+        String sql = "DELETE FROM user WHERE id = ?";
+        try (Connection connection = DB.getConnection("student1");
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
             statement.executeUpdate();
         }
     }

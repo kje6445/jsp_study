@@ -1,4 +1,4 @@
-package lecture1.jdbc3;
+package lecture1.jdbc4;
 
 public class User {
     public int getId() {
@@ -44,9 +44,9 @@ public class User {
 		this.departmentName = departmentName;
 	}
 	public boolean isEnabled() {
-		return enabled == 0 ? false : true;
+		return enabled;
 	}
-	public void setEnabled(int enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 	public String getUserType() {
@@ -62,6 +62,6 @@ public class User {
     String email;
     int departmentId;
     String departmentName;
-    int enabled;
+    boolean enabled;
     String userType;
 }
