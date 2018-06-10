@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.net.*, lecture1.*, lecture1.*" %>
+<%@ page import="java.util.*, java.net.*, lecture1.*, lecture1.*,java.text.*" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 
 
@@ -15,16 +15,21 @@ String srchText = request.getParameter("srchText");
 if (srchText == null) srchText = "";
 String srchTextEncoded = URLEncoder.encode(srchText, "UTF-8");
 
- int recordCount = ArticleDAO.count(srchText); 
+
+String ss = request.getParameter("ss");
+String st = request.getParameter("st");
+if (ss == null) ss = "0";
+if (st == null) st = "";
+String stEncoded = URLEncoder.encode(st, "UTF-8");
+
+int recordCount = ArticleDAO.count(ss,st); 
 
 int lastPage = (recordCount + pageSize - 1) / pageSize;
 if (currentPage > lastPage) currentPage = lastPage;
-
 String od = request.getParameter("od");
-if(od==null) od ="0";
-String ss = request.getParameter("ss");
-if(ss==null) ss ="0";
-List<Article> list = ArticleDAO.findByName(srchText, currentPage, pageSize,od,ss);
+if(od == null) od ="0";
+List<Article> list = ArticleDAO.findAll(currentPage, pageSize,ss,st,od);
+SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd HH:mm:ss"); 
 
 /* Timestamp register =  request.getTimestamp("writeTime"); */
 %>
@@ -63,9 +68,13 @@ List<Article> list = ArticleDAO.findByName(srchText, currentPage, pageSize,od,ss
   		<option value="4" <%= "4".equals(od) ? "selected" : "" %>>제목 오름차순</option>
   		
   	</select>
+  	<select name="ss" class="form-control">
+  		<option value="0" <%= "0".equals(od) ? "selected" : "" %>>전체</option>
+  		<option value="1" <%= "1".equals(od) ? "selected" : "" %>>작성자</option>
+  		<option value="2" <%= "2".equals(od) ? "selected" : "" %>>제목</option>
  
     <label>이름</label>
-    <input type="text" class="form-control" name="srchText" value="<%= srchText %>" 
+    <input type="text" class="form-control" name="st" value="<%= st %>" 
            placeholder="검색조건" />
   </div>
   <button type="submit" class="btn btn-primary">조회</button>
@@ -88,7 +97,7 @@ List<Article> list = ArticleDAO.findByName(srchText, currentPage, pageSize,od,ss
         <td><%= article.getId() %></td>
         <td><%= article.getNo() %></td>
         <td><%= article.getBoardName() %></td>
-        <td><%= article.getName() %></td>
+        <td><%= article.getUserName() %></td>
         <td><%= article.getWriteTime() %></td>
         <td><%= article.getTitle() %></td>
 

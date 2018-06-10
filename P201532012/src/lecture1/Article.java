@@ -1,15 +1,17 @@
 package lecture1;
 
+import java.sql.Timestamp;
+
 public class Article {
 
 	int id;
 	int boardId;
 	int no;
 	int userId;
-	int writeTime;
+	Timestamp writeTime;
 	String title;
 	String body;
-	String notice;
+	boolean notice;
 	String name;
 	String boardName;
 	String userName;
@@ -57,10 +59,10 @@ public class Article {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public int getWriteTime() {
+	public Timestamp getWriteTime() {
 		return writeTime;
 	}
-	public void setWriteTime(int writeTime) {
+	public void setWriteTime(Timestamp writeTime) {
 		this.writeTime = writeTime;
 	}
 	public String getTitle() {
@@ -75,10 +77,10 @@ public class Article {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public String getNotice() {
+	public boolean isNotice() {
 		return notice;
 	}
-	public void setNotice(String notice) {
+	public void setNotice(boolean notice) {
 		this.notice = notice;
 	}
 

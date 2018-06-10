@@ -8,7 +8,7 @@ import java.util.List;
 public class UserDAO {
 
 	public static List<User> findAll() throws Exception {
-        String sql = "SELECT * FROM board";
+        String sql = "SELECT * FROM user";
         try (Connection connection = DB.getConnection("bbs2");
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
